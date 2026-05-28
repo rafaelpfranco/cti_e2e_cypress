@@ -1,11 +1,11 @@
-import { PaginaLogin } from './pages/login/PaginaLogin'
+import { LoginPage } from '@/support/pages'
 
 Cypress.Commands.add('login', () => {
   cy.session('sessao-usuario', () => {
-    const paginaLogin = new PaginaLogin()
+    const loginPage = new LoginPage()
 
-    paginaLogin.visitar()
-    paginaLogin.realizarLogin(Cypress.env('userEmail'), Cypress.env('userPassword'))
+    loginPage.visitar()
+    loginPage.realizarLogin(Cypress.env('userEmail'), Cypress.env('userPassword'))
 
     cy.location('pathname').should('not.include', '/admins/sign_in')
   })

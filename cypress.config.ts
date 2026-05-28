@@ -1,6 +1,6 @@
 import { defineConfig } from 'cypress'
 import mochawesomeReporterPlugin from 'cypress-mochawesome-reporter/plugin'
-import { environment } from './cypress/support/config/environment'
+import { environment } from '@/support/config/environment'
 
 export default defineConfig({
   viewportWidth: 1366,

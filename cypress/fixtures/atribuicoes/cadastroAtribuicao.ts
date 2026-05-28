@@ -1,0 +1,27 @@
+import type { DadosCadastroAtribuicao } from '@/fixtures/atribuicoes/types'
+
+export const dadosCadastroAtribuicao: DadosCadastroAtribuicao = {
+  atribuicaoParaColaborador: {
+    area: 'JUDICIAL',
+    subarea: 'APOIO',
+    tipoResponsavel: 'Colaborador',
+    colaborador: 'Mariana Oliveira Santos',
+    atendidoPor: 'Atendente',
+    modalidade: 'Presencial',
+    sistemaOperacional: 'WINDOWS 11 PRO',
+    usaPacoteOffice: false,
+    pacoteOffice: '',
+    observacao: 'Teste Automatizado - Inventario CTI',
+  },
+  atribuicaoSemColaborador: {
+    area: 'JUDICIAL',
+    subarea: 'APOIO',
+    tipoResponsavel: 'Sem Colaborador',
+    atendidoPor: 'Atendente',
+    modalidade: 'Home Office',
+    sistemaOperacional: 'WINDOWS 10 PRO',
+    usaPacoteOffice: false,
+    pacoteOffice: '',
+    observacao: 'Teste Automatizado - Inventario CTI sem colaborador',
+  },
+}

@@ -1,8 +1,7 @@
-export class PaginaNovaAtribuicao {
-  public readonly path = '/portal_service/bonds/new'
+export class EditarAtribuicaoPage {
+  public readonly path = '/portal_service/bonds'
 
   private readonly seletores = {
-    titulo: '.card-header h6',
     areaSelect: '#set_area',
     subareaSelect: '#resp_subarea',
     radioColaborador: '#bond_employee_type_colaborador',
@@ -11,7 +10,9 @@ export class PaginaNovaAtribuicao {
     colaboradorSelect: '#collaborators',
     select2ColaboradorContainer: '#select2-collaborators-container',
     select2Opcoes: '.select2-results__option',
+    select2BuscaAberta: '.select2-container--open .select2-search__field',
     opcaoSelect: 'option',
+    opcaoSelecionada: 'option:selected',
     atendidoPorSelect: '#attended',
     radioPresencial: '#bond_modality_presencial',
     radioHomeOffice: '#bond_modality_home_office',
@@ -22,21 +23,33 @@ export class PaginaNovaAtribuicao {
     botaoAdicionarAtivo: '#btn_asset',
     ativoSelect: '#set_tombo',
     descricaoAtivoSelect: '#set_description',
-    statusAtivoSelect: '#set_status',
-    indicadorObrigatorio: 'code',
+    statusNovoAtivoSelect: '#set_status',
+    linhasAtivo: '.nested-fields.add_ativo',
+    botaoRemoverAtivo: 'a.remove_fields',
+    statusAtivoSelect: 'select[name*="[status]"]',
+    descricaoDefeitoInput: 'textarea[name*="defect"], input[name*="defect"]',
     body: 'body',
     botaoSalvarInput: 'input[type="submit"][value="Salvar"]',
     botaoSalvarButton: 'button',
     botaoCancelar: 'a, button',
   }
 
-  public visitar(): void {
-    cy.visit(this.path)
-  }
-
   public deveEstarCarregada(): void {
     cy.location('pathname').should('include', this.path)
-    cy.contains(this.seletores.titulo, 'Nova Atribuição').should('be.visible')
+    cy.location('pathname').should('include', '/edit')
+    cy.get(this.seletores.areaSelect).should('exist')
+    cy.get(this.seletores.subareaSelect).should('exist')
+    cy.get(this.seletores.observacaoTextarea).should('exist')
+  }
+
+  public deveExibirDadosCarregados(): void {
+    cy.get(this.seletores.areaSelect).find(this.seletores.opcaoSelect).should('exist')
+    cy.get(this.seletores.areaSelect)
+      .find(this.seletores.opcaoSelecionada)
+      .should('not.have.value', '')
+    cy.get(this.seletores.subareaSelect)
+      .find(this.seletores.opcaoSelecionada)
+      .should('not.have.value', '')
   }
 
   public selecionarArea(area: string): void {
@@ -45,34 +58,6 @@ export class PaginaNovaAtribuicao {
 
   public selecionarSubarea(subarea: string): void {
     cy.get(this.seletores.subareaSelect).select(subarea)
-  }
-
-  public selecionarTipoColaborador(): void {
-    cy.get(this.seletores.radioColaborador).check({ force: true })
-  }
-
-  public selecionarTipoSemColaborador(): void {
-    cy.get(this.seletores.radioSemColaborador).check({ force: true })
-  }
-
-  public selecionarTipoSubarea(): void {
-    cy.get(this.seletores.radioSubarea).check({ force: true })
-  }
-
-  public selecionarColaborador(colaborador: string): void {
-    cy.get(this.seletores.colaboradorSelect).then(($select) => {
-      const possuiOpcao = [...$select.find(this.seletores.opcaoSelect)].some(
-        (opcao) => opcao.textContent?.trim() === colaborador,
-      )
-
-      if (possuiOpcao) {
-        cy.wrap($select).select(colaborador, { force: true })
-        return
-      }
-
-      cy.get(this.seletores.select2ColaboradorContainer).click()
-      cy.get(this.seletores.select2Opcoes).contains(colaborador).click()
-    })
   }
 
   public selecionarAtendidoPor(atendidoPor: string): void {
@@ -97,26 +82,6 @@ export class PaginaNovaAtribuicao {
     cy.get(this.seletores.sistemaOperacionalSelect).select(sistemaOperacional)
   }
 
-  public marcarUsoPacoteOffice(): void {
-    cy.get(this.seletores.checkboxPacoteOffice).check({ force: true })
-  }
-
-  public desmarcarUsoPacoteOffice(): void {
-    cy.get(this.seletores.checkboxPacoteOffice).uncheck({ force: true })
-  }
-
-  public selecionarPacoteOffice(pacoteOffice: string): void {
-    cy.get(this.seletores.pacoteOfficeSelect).select(pacoteOffice)
-  }
-
-  public deveExibirPacoteOfficeDesabilitado(): void {
-    cy.get(this.seletores.pacoteOfficeSelect).should('be.disabled')
-  }
-
-  public deveExibirPacoteOfficeHabilitado(): void {
-    cy.get(this.seletores.pacoteOfficeSelect).should('not.be.disabled')
-  }
-
   public preencherObservacao(observacao: string): void {
     cy.get(this.seletores.observacaoTextarea).clear().type(observacao)
   }
@@ -134,16 +99,36 @@ export class PaginaNovaAtribuicao {
     cy.get(this.seletores.ativoSelect)
       .last()
       .should('exist')
-      .select(tombo, { force: true })
-      .should('not.have.value', '')
-      .trigger('change', { force: true })
+      .then(($select) => {
+        cy.wrap($select).next('.select2-container').find('.select2-selection').click({ force: true })
+      })
+
+    cy.get(this.seletores.select2BuscaAberta).clear().type(tombo)
+    cy.contains(this.seletores.select2Opcoes, tombo).click()
+
+    cy.get(this.seletores.ativoSelect).last().should('not.have.value', '')
   }
 
   public vincularAtivo(tombo: string): void {
     this.adicionarAtivo()
     this.selecionarAtivoPorTombo(tombo)
     this.selecionarPrimeiraDescricaoAtivo()
-    this.selecionarPrimeiroStatusAtivo()
+    this.selecionarPrimeiroStatusNovoAtivo()
+  }
+
+  public selecionarStatusAtivoAtual(status: string): void {
+    cy.get(this.seletores.statusAtivoSelect).first().select(status)
+  }
+
+  public informarDescricaoDefeito(descricao: string): void {
+    cy.get(this.seletores.descricaoDefeitoInput).first().clear().type(descricao)
+  }
+
+  public removerPrimeiroAtivo(): void {
+    cy.get(this.seletores.linhasAtivo)
+      .first()
+      .find(this.seletores.botaoRemoverAtivo)
+      .click({ force: true })
   }
 
   public salvar(): void {
@@ -161,18 +146,13 @@ export class PaginaNovaAtribuicao {
     cy.contains(this.seletores.botaoCancelar, 'Cancelar').click()
   }
 
-  public deveExibirIndicadoresObrigatorios(): void {
-    cy.get(this.seletores.indicadorObrigatorio).should('contain.text', '*')
-  }
-
   public devePossuirCamposObrigatorios(): void {
     cy.get(this.seletores.areaSelect).should('have.attr', 'required')
     cy.get(this.seletores.subareaSelect).should('have.attr', 'required')
-    cy.get(this.seletores.colaboradorSelect).should('have.attr', 'required')
   }
 
   public deveManterFormularioAberto(): void {
-    cy.location('pathname').should('include', '/portal_service/bonds')
+    cy.location('pathname').should('include', this.path)
     cy.get(this.seletores.areaSelect).should('exist')
     cy.get(this.seletores.subareaSelect).should('exist')
   }
@@ -181,46 +161,8 @@ export class PaginaNovaAtribuicao {
     this.selecionarPrimeiraOpcaoValida(this.seletores.descricaoAtivoSelect)
   }
 
-  private selecionarPrimeiroStatusAtivo(): void {
-    cy.get(this.seletores.radioSemColaborador).then(($radioSemColaborador) => {
-      const deveVincularSemUso = $radioSemColaborador.is(':checked')
-
-      this.selecionarStatusAtivoPadrao(deveVincularSemUso)
-    })
-  }
-
-  private selecionarStatusAtivoPadrao(deveVincularSemUso: boolean): void {
-    cy.get(this.seletores.statusAtivoSelect)
-      .last()
-      .should(($select) => {
-        const opcoesValidas = [...$select.find(this.seletores.opcaoSelect)].filter(
-          (item) => (item as HTMLOptionElement).value !== '',
-        )
-
-        expect(opcoesValidas.length).to.be.greaterThan(0)
-      })
-      .then(($select) => {
-        const opcoes = [...$select.find(this.seletores.opcaoSelect)] as HTMLOptionElement[]
-        const opcaoPreferida = opcoes.find((opcao) => {
-          const texto = opcao.textContent?.trim().toUpperCase() ?? ''
-
-          if (opcao.value === '') {
-            return false
-          }
-
-          return deveVincularSemUso ? !texto.includes('USO') : texto.includes('USO')
-        })
-        const opcaoFallback = opcoes.find((opcao) => opcao.value !== '')
-        const valor = opcaoPreferida?.value ?? opcaoFallback?.value
-
-        if (!valor) {
-          throw new Error(
-            `Nenhuma opcao valida encontrada para o seletor ${this.seletores.statusAtivoSelect}`,
-          )
-        }
-
-        cy.wrap($select).invoke('val', valor).trigger('change', { force: true })
-      })
+  private selecionarPrimeiroStatusNovoAtivo(): void {
+    this.selecionarPrimeiraOpcaoValida(this.seletores.statusNovoAtivoSelect)
   }
 
   private selecionarPrimeiraOpcaoValida(seletor: string): void {
@@ -246,4 +188,5 @@ export class PaginaNovaAtribuicao {
         cy.wrap($select).invoke('val', valor).trigger('change', { force: true })
       })
   }
+
 }

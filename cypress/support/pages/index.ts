@@ -1,0 +1,6 @@
+export { LoginPage } from './login/LoginPage'
+export { AtivosPage } from './ativos/AtivosPage'
+export { AtribuicoesPage } from './atribuicoes/AtribuicoesPage'
+export { NovaAtribuicaoPage } from './atribuicoes/NovaAtribuicaoPage'
+export { EditarAtribuicaoPage } from './atribuicoes/EditarAtribuicaoPage'
+export { DepositoCtiPage } from './deposito/DepositoCtiPage'

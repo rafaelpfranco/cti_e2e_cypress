@@ -1,4 +1,4 @@
-export class PaginaLogin {
+export class LoginPage {
   public readonly path = '/admins/sign_in'
 
   private readonly seletores = {
