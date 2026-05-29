@@ -22,7 +22,7 @@ jobs:
       BASE_URL: ${{ secrets.BASE_URL }}
       USER_EMAIL: ${{ secrets.USER_EMAIL }}
       USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
-      TIPO_TESTE: ${{ github.event.inputs.tipo_teste }}
+      TIPO_TESTE: ${{ github.event.inputs.tipo_teste || 'regressivo' }}
 
     steps:
       - name: Checkout
@@ -42,6 +42,11 @@ jobs:
 
       - name: Validate TypeScript
         run: npx tsc --noEmit
+
+      - name: Validate BASE_URL connectivity
+        run: |
+          echo "Validando conectividade com BASE_URL"
+          curl -I "$BASE_URL" || true
 
       - name: Run all tests
         if: ${{ github.event.inputs.tipo_teste == 'todos' }}
