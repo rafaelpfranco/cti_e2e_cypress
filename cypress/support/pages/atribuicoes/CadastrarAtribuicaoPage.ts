@@ -9,7 +9,6 @@ export class CadastrarAtribuicaoPage {
     subareaSelect: '#resp_subarea',
     radioColaborador: '#bond_employee_type_colaborador',
     radioSemColaborador: '#bond_employee_type_sem_usuario',
-    radioSubarea: '#bond_employee_type_subarea',
     colaboradorSelect: '#collaborators',
     selectColaboradorContainer: '#select2-collaborators-container',
     selectOpcoes: '.select2-results__option',
@@ -18,7 +17,6 @@ export class CadastrarAtribuicaoPage {
     atendidoPorSelect: '#attended',
     radioPresencial: '#bond_modality_presencial',
     radioHomeOffice: '#bond_modality_home_office',
-    sistemaOperacionalSelect: '#so',
     checkboxPacoteOffice: '#check_office',
     pacoteOfficeSelect: '#key',
     observacaoTextarea: '#bond_observation',
@@ -58,10 +56,6 @@ export class CadastrarAtribuicaoPage {
     cy.get(this.seletores.radioSemColaborador).check({ force: true })
   }
 
-  public selecionarTipoSubarea(): void {
-    cy.get(this.seletores.radioSubarea).check({ force: true })
-  }
-
   public selecionarColaborador(colaborador: string): void {
     cy.get(this.seletores.colaboradorSelect).then(($select) => {
       const possuiOpcao = [...$select.find(this.seletores.opcaoSelect)].some(
@@ -96,16 +90,6 @@ export class CadastrarAtribuicaoPage {
     throw new Error(`Modalidade invalida: ${modalidade}`)
   }
 
-  public selecionarSistemaOperacional(sistemaOperacional: string): void {
-    cy.get(this.seletores.sistemaOperacionalSelect).select(sistemaOperacional)
-  }
-
-  public preencherFormularioParaColaborador(atribuicao: AtribuicaoCadastro): void {
-    this.preencherCamposObrigatorios(atribuicao)
-    this.selecionarSistemaOperacional(atribuicao.sistemaOperacional)
-    this.preencherUsoPacoteOffice(atribuicao)
-  }
-
   public preencherCamposObrigatorios(atribuicao: AtribuicaoCadastro): void {
     this.selecionarArea(atribuicao.area)
     this.selecionarSubarea(atribuicao.subarea)
@@ -116,27 +100,12 @@ export class CadastrarAtribuicaoPage {
     this.preencherObservacao(atribuicao.observacao)
   }
 
-  public preencherFormularioSemColaborador(atribuicao: AtribuicaoCadastro): void {
-    this.selecionarArea(atribuicao.area)
-    this.selecionarSubarea(atribuicao.subarea)
-    this.selecionarTipoSemColaborador()
-    this.selecionarAtendidoPor(atribuicao.atendidoPor)
-    this.selecionarModalidade(atribuicao.modalidade)
-    this.selecionarSistemaOperacional(atribuicao.sistemaOperacional)
-    this.preencherUsoPacoteOffice(atribuicao)
-    this.preencherObservacao(atribuicao.observacao)
-  }
-
   public marcarUsoPacoteOffice(): void {
     cy.get(this.seletores.checkboxPacoteOffice).check({ force: true })
   }
 
   public desmarcarUsoPacoteOffice(): void {
     cy.get(this.seletores.checkboxPacoteOffice).uncheck({ force: true })
-  }
-
-  public selecionarPacoteOffice(pacoteOffice: string): void {
-    cy.get(this.seletores.pacoteOfficeSelect).select(pacoteOffice)
   }
 
   public deveExibirPacoteOfficeDesabilitado(): void {
@@ -151,37 +120,9 @@ export class CadastrarAtribuicaoPage {
     cy.get(this.seletores.observacaoTextarea).clear().type(observacao)
   }
 
-  public limparObservacao(): void {
-    cy.get(this.seletores.observacaoTextarea).clear()
-  }
-
   public adicionarAtivo(): void {
     cy.get(this.seletores.botaoAdicionarAtivo).click()
     cy.get(this.seletores.ativoSelect).should('exist')
-  }
-
-  public selecionarAtivoPorTombo(tombo: string): void {
-    cy.get(this.seletores.ativoSelect)
-      .last()
-      .should('exist')
-      .then(($select) => {
-        cy.wrap($select)
-          .next('.select2-container')
-          .find('.select2-selection')
-          .click({ force: true })
-      })
-
-    cy.get(this.seletores.selectBuscaAberta).clear().type(tombo)
-    cy.contains(this.seletores.selectOpcoes, tombo).click()
-
-    cy.get(this.seletores.ativoSelect).last().should('not.have.value', '')
-  }
-
-  public vincularAtivo(tombo: string): void {
-    this.adicionarAtivo()
-    this.selecionarAtivoPorTombo(tombo)
-    this.selecionarPrimeiraDescricaoAtivo()
-    this.selecionarPrimeiroStatusAtivo()
   }
 
   public vincularPrimeiroAtivo(atribuicao: AtribuicaoCadastro): void {
@@ -269,17 +210,6 @@ export class CadastrarAtribuicaoPage {
           .find('.select2-selection')
           .click({ force: true })
       })
-  }
-
-  private preencherUsoPacoteOffice(atribuicao: AtribuicaoCadastro): void {
-    if (atribuicao.usaPacoteOffice) {
-      this.marcarUsoPacoteOffice()
-      this.deveExibirPacoteOfficeHabilitado()
-      this.selecionarPacoteOffice(atribuicao.pacoteOffice)
-      return
-    }
-
-    this.deveExibirPacoteOfficeDesabilitado()
   }
 
   private selecionarPrimeiroStatusAtivo(): void {

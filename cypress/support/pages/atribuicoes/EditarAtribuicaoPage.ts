@@ -6,13 +6,6 @@ export class EditarAtribuicaoPage {
   private readonly seletores = {
     areaSelect: '#set_area',
     subareaSelect: '#resp_subarea',
-    radioColaborador: '#bond_employee_type_colaborador',
-    radioSemColaborador: '#bond_employee_type_sem_usuario',
-    radioSubarea: '#bond_employee_type_subarea',
-    colaboradorSelect: '#collaborators',
-    select2ColaboradorContainer: '#select2-collaborators-container',
-    select2Opcoes: '.select2-results__option',
-    select2BuscaAberta: '.select2-container--open .select2-search__field',
     opcaoSelect: 'option',
     opcaoSelecionada: 'option:selected',
     atendidoPorSelect: '#attended',
@@ -109,37 +102,9 @@ export class EditarAtribuicaoPage {
     this.preencherUsoPacoteOffice(atribuicao)
   }
 
-  public limparObservacao(): void {
-    cy.get(this.seletores.observacaoTextarea).clear()
-  }
-
   public adicionarAtivo(): void {
     cy.get(this.seletores.botaoAdicionarAtivo).click({ force: true })
     cy.get(this.seletores.ativoSelect).should('exist')
-  }
-
-  public selecionarAtivoPorTombo(tombo: string): void {
-    cy.get(this.seletores.ativoSelect)
-      .last()
-      .should('exist')
-      .then(($select) => {
-        cy.wrap($select)
-          .next('.select2-container')
-          .find('.select2-selection')
-          .click({ force: true })
-      })
-
-    cy.get(this.seletores.select2BuscaAberta).clear().type(tombo)
-    cy.contains(this.seletores.select2Opcoes, tombo).click()
-
-    cy.get(this.seletores.ativoSelect).last().should('not.have.value', '')
-  }
-
-  public vincularAtivo(tombo: string): void {
-    this.adicionarAtivo()
-    this.selecionarAtivoPorTombo(tombo)
-    this.selecionarPrimeiraDescricaoAtivo()
-    this.selecionarPrimeiroStatusNovoAtivo()
   }
 
   public vincularPrimeiroAtivoAutomatizadoDaAtribuicao(atribuicao: AtribuicaoEdicao): void {
@@ -172,23 +137,6 @@ export class EditarAtribuicaoPage {
       .first()
       .find(this.seletores.botaoRemoverAtivo)
       .click({ force: true })
-  }
-
-  public substituirAtivoDisponivel(statusAtual: string, atribuicao: AtribuicaoEdicao): void {
-    this.selecionarStatusPrimeiroAtivo(statusAtual)
-    this.removerPrimeiroAtivo()
-    this.vincularPrimeiroAtivoAutomatizadoDaAtribuicao(atribuicao)
-  }
-
-  public substituirAtivoComDefeito(
-    statusAtual: string,
-    descricaoDefeito: string,
-    atribuicao: AtribuicaoEdicao,
-  ): void {
-    this.selecionarStatusPrimeiroAtivo(statusAtual)
-    this.informarDescricaoDefeitoPrimeiroAtivo(descricaoDefeito)
-    this.removerPrimeiroAtivo()
-    this.vincularPrimeiroAtivoAutomatizadoDaAtribuicao(atribuicao)
   }
 
   public salvar(): void {
