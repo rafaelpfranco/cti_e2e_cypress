@@ -1,64 +1,68 @@
-# Inventario CTI E2E Cypress
+# Inventário CTI - Testes E2E com Cypress
 
-Automacao E2E do sistema Inventario CTI com Cypress, TypeScript, Page Object simples, massas de teste, evidencias e relatorios de execucao.
+Projeto de automação E2E do sistema **Inventário CTI**, desenvolvido com **Cypress** e **TypeScript**.
 
-## Objetivo
-
-Validar fluxos criticos do Inventario CTI, como login, cadastro de ativos, cadastro e edicao de atribuicoes, vinculacao de ativos, geracao de termos e relatorios.
+A suíte cobre fluxos funcionais do sistema, como login, cadastro de ativos, cadastro e edição de atribuições, vínculo de ativos e geração de termos.
 
 ## Stack
 
-- Cypress
-- TypeScript
-- Dotenv
-- Page Object simples
-- Fixtures/massas de teste
-- cypress-mochawesome-reporter
-- ESLint
-- Prettier
+* Cypress
+* TypeScript
+* Dotenv
+* Page Object
+* `@cypress/grep`
+* `cypress-mochawesome-reporter`
+* ESLint
+* Prettier
 
-## Convencoes de Automacao
+## Objetivo
 
-Este projeto utiliza Cypress com TypeScript e Page Objects simples.
+Validar os principais fluxos do sistema Inventário CTI por meio de testes automatizados E2E, garantindo que funcionalidades críticas continuem funcionando após alterações no sistema.
 
-As specs nao usam Cucumber nem step definitions. Os cenarios BDD ficam documentados em arquivos `.feature`, enquanto a automacao e implementada diretamente nas specs Cypress.
-
-A arquitetura tambem evita BasePage e fragments para manter a estrutura objetiva e facil de navegar.
-
-As specs descrevem os fluxos de negocio e delegam interacoes aos Page Objects. Os seletores ficam encapsulados nas Pages e nao devem ser declarados diretamente nas specs.
-
-Os testes devem validar comportamentos reais da aplicacao. Cenarios bloqueados por ausencia de seletor, regra de negocio ou comportamento confirmado devem ser tratados antes da automacao, e a suite nao utiliza cenarios pulados como estrategia de cobertura.
-
-## Estrutura
+## Estrutura do Projeto
 
 ```txt
-features/                 Documentacao BDD, sem execucao pelo Cypress
+features/
+  Documentação BDD dos cenários
+
 cypress/
-  e2e/                    Specs Cypress + TypeScript
-  fixtures/               Massas de teste
+  e2e/
+    Specs Cypress organizadas por funcionalidade
+
+  fixtures/
+    Massas de teste tipadas em TypeScript
+
   support/
-    commands.ts           Comandos customizados
-    e2e.ts                Setup global do Cypress
-    types.ts              Tipagens customizadas
-    config/               Configuracao centralizada de ambiente
-    pages/                Page Objects simples
+    commands.ts
+    e2e.ts
+    types.ts
+    config/
+    pages/
 ```
 
-## Pre-requisitos
+## Decisões Técnicas
 
-- Node.js 18 ou superior
-- npm
-- Google Chrome, se for executar testes no Chrome
+O projeto utiliza Cypress com TypeScript e Page Objects simples.
 
-## Instalacao
+Os arquivos `.feature` são utilizados apenas como documentação dos cenários BDD. Eles não são executados pelo Cypress e não utilizam Cucumber.
+
+As specs são responsáveis por descrever o fluxo dos testes, enquanto as interações com tela, seletores e validações ficam centralizadas nas Pages.
+
+## Pré-requisitos
+
+* Node.js 18 ou superior
+* npm
+* Google Chrome ou Electron
+
+## Instalação
 
 ```bash
 npm install
 ```
 
-## Configuracao Do Ambiente
+## Configuração do Ambiente
 
-Crie um arquivo `.env` a partir de `.env.example`:
+Crie o arquivo `.env` com base no `.env.example`.
 
 ```env
 BASE_URL=http://testeqa.pge.ce.gov.br
@@ -67,127 +71,182 @@ USER_PASSWORD=senha
 TIPO_TESTE=regressivo
 ```
 
-O arquivo `.env` nao deve ser versionado.
-
-Quando a senha tiver caracteres especiais como `#` ou `$`, coloque o valor entre aspas simples para o `dotenv` nao interpretar parte do texto como comentario:
+Utilize aspas simples no password.
 
 ```env
-USER_PASSWORD='sua_senha_com_#_e_$'
+USER_PASSWORD='minha_senha_#_e_$'
 ```
 
-## Execucao
+## Execução dos Testes
 
-Modo interativo:
+Abrir Cypress em modo interativo:
 
 ```bash
 npm run cy:open
 ```
 
-Todos os testes:
+Executar todos os testes:
 
 ```bash
 npm run cy:run
 ```
 
-Os scripts removem variaveis `ELECTRON_*` herdadas do terminal integrado do VS Code, pois elas podem fazer o binario do Cypress iniciar como Node em vez de Electron.
+Executar testes regressivos:
 
-## Features BDD
+```bash
+npm run cy:run:regressivo
+```
 
-Os arquivos `.feature` ficam na pasta `features/` e documentam os cenarios em linguagem de negocio. Eles nao sao executados pelo Cypress e nao possuem step definitions.
+Executar testes complementares:
 
-As tags seguem este padrao:
+```bash
+npm run cy:run:complementar
+```
 
-- funcionalidade: `@login`, `@atribuicoes`, `@relatorios`;
-- categoria: `@regressivo` ou `@complementar`;
-- caminho: `@happy_path` ou `@non_happy_path`;
-- rastreabilidade: `@lg01`, `@ca01`, `@ea03`;
-- sequencial: `@lg01_1`, `@ca01_3`, `@ea03_7`.
+Executar uma spec específica:
 
-## Estrategia De Automacao
+```bash
+npm run cy:run -- --spec cypress/e2e/atribuicoes/cadastrarAtribuicao.cy.ts
+```
 
-As specs descrevem fluxos de negocio e delegam interacoes aos Page Objects. Cada Page Object representa uma tela, concentra os seletores em um objeto privado e expoe metodos de navegacao, acao e validacao.
+## Categorização dos Testes
 
-Nenhum seletor deve ser declarado diretamente nas specs.
+A suíte utiliza `@cypress/grep` para permitir execução por categoria.
 
-## Escopo
+Categorias principais:
 
-- Login.
-- Cadastro de ativos.
-- Cadastro de atribuicoes.
-- Edicao de atribuicoes.
-- Vinculacao, remocao e alteracao de status de ativos.
-- Geracao de termos.
-- Relatorio de movimentacao de ativos.
-- Relatorio de atribuicoes por area.
-- Evidencias por screenshots, videos, downloads e relatorios.
+```txt
+@regressivo
+@complementar
+```
 
-## Fora De Escopo
+Tags de fluxo:
 
-- Cucumber, step definitions ou preprocessor de `.feature`.
-- Testes unitarios e de API.
-- Validacao visual pixel a pixel.
-- Performance, carga e seguranca.
-- Cadastro administrativo de dados base fora dos fluxos E2E.
+```txt
+@happy_path
+@non_happy_path
+```
 
-## Criterios De Entrada
+Tags de rastreabilidade por feature:
 
-- Ambiente de teste disponivel.
-- Credenciais validas configuradas no `.env`.
-- Massas de teste revisadas.
-- Seletores reais confirmados para os fluxos implementados.
-- Navegadores instalados para execucao local.
+```txt
+@lg01
+@at01
+@ca01
+@ea03
+@gt01
+```
 
-## Criterios De Saida
+Exemplo de execução por tag:
 
-- Specs criticas implementadas e executadas.
-- Evidencias geradas automaticamente.
-- Relatorios disponiveis em `cypress/reports`.
-- Falhas analisadas e documentadas.
-- README atualizado com instrucoes de execucao.
+```bash
+npx cypress run --env grepTags=@regressivo
+```
 
-## Estrategia De Evidencias
+## Escopo Automatizado
 
-- Screenshots automaticos em falhas: `cypress/screenshots`
-- Videos das execucoes headless: `cypress/videos`
-- Downloads e PDFs: `cypress/downloads`
-- Relatorio HTML/JSON: `cypress/reports`
+* Login
+* Logout
+* Cadastro de ativos
+* Cadastro de atribuições
+* Edição de atribuições
+* Vínculo de ativos
+* Alteração de status de ativos
+* Geração de termos
 
-O reporter configurado e `cypress-mochawesome-reporter`.
+## Evidências
 
-## Estrategia De Seletores
+Durante a execução, o Cypress pode gerar:
 
-Prioridade recomendada:
+```txt
+cypress/screenshots
+cypress/videos
+cypress/downloads
+cypress/reports
+```
+
+O relatório HTML/JSON é gerado pelo `cypress-mochawesome-reporter`.
+
+## Qualidade de Código
+
+Executar lint:
+
+```bash
+npm run lint
+```
+
+Corrigir problemas automaticamente quando possível:
+
+```bash
+npm run lint:fix
+```
+
+Validar formatação:
+
+```bash
+npm run format:check
+```
+
+Formatar arquivos:
+
+```bash
+npm run format
+```
+
+Validar TypeScript:
+
+```bash
+npx tsc --noEmit
+```
+
+## Boas Práticas de Seletores
+
+Prioridade utilizadas:
 
 1. `data-cy`
 2. `id`
 3. `name`
 4. `aria-label`
 5. `role`
-6. texto visivel com `cy.contains`
-7. atributos semanticos
-8. seletor CSS simples
+6. texto visível com `cy.contains`
+7. atributos semânticos
+8. seletores CSS simples
 
-Evitar `nth-child`, classes dinamicas, seletores longos e encadeamento profundo de HTML.
+Evitar:
 
-## Qualidade
+* seletores muito longos;
+* `nth-child`;
+* classes dinâmicas;
+* encadeamento profundo de HTML;
+* seletores diretamente nas specs.
 
-```bash
-npm run lint
-npm run format:check
+## Pipeline
+
+A suíte pode ser executada em pipeline por tipo de teste:
+
+```txt
+todos
+regressivo
+complementar
 ```
 
-## Riscos E Cuidados
+A variável `TIPO_TESTE` define o grupo de testes a ser executado.
 
-- Ambiente pode estar indisponivel ou instavel.
-- Dados de teste compartilhados podem ser alterados por outras execucoes.
-- Alguns fluxos ainda dependem de seletores ou regras de negocio confirmadas manualmente.
-- Fluxos com downloads podem usar nomes dinamicos.
-- Em caso de bloqueio por seletor, DOM ou regra incerta, a implementacao deve parar e solicitar validacao manual.
+Exemplo:
 
-## Melhorias Sugeridas
+```env
+TIPO_TESTE=regressivo
+```
 
-- Adicionar `data-cy` nos elementos criticos.
-- Criar massa de dados dedicada para automacao.
-- Implementar limpeza de dados via API, caso disponivel.
-- Validar conteudo dos PDFs gerados.
-- Executar a suite em pipeline CI.
+## Scripts Principais
+
+```bash
+npm run cy:open
+npm run cy:run
+npm run cy:run:regressivo
+npm run cy:run:complementar
+npm run lint
+npm run lint:fix
+npm run format
+npm run format:check
+```
