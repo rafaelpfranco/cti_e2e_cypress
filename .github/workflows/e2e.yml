@@ -43,10 +43,13 @@ jobs:
       - name: Validate TypeScript
         run: npx tsc --noEmit
 
-      - name: Validate BASE_URL connectivity
+      - name: Network diagnostics
         run: |
-          echo "Validando conectividade com BASE_URL"
-          curl -I "$BASE_URL" || true
+          echo "DNS:"
+          nslookup testeqa.pge.ce.gov.br || true
+
+          echo "HTTP:"
+          curl -L "http://testeqa.pge.ce.gov.br" --connect-timeout 20 --max-time 30 -v || true
 
       - name: Run all tests
         if: ${{ github.event.inputs.tipo_teste == 'todos' }}
