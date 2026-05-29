@@ -1,5 +1,7 @@
 # Inventário CTI - Testes E2E com Cypress
 
+[![Cypress E2E](https://github.com/rafaelpfranco/cti_e2e_cypress/actions/workflows/e2e.yml/badge.svg)](https://github.com/rafaelpfranco/cti_e2e_cypress/actions/workflows/e2e.yml)
+
 Projeto de automação E2E do sistema **Inventário CTI**, desenvolvido com **Cypress** e **TypeScript**.
 
 A suíte cobre fluxos funcionais do sistema, como login, cadastro de ativos, cadastro e edição de atribuições, vínculo de ativos e geração de termos.
@@ -12,6 +14,7 @@ A suíte cobre fluxos funcionais do sistema, como login, cadastro de ativos, cad
 - Page Object
 - `@cypress/grep`
 - `cypress-mochawesome-reporter`
+- Mochawesome
 - ESLint
 - Prettier
 - Husky
@@ -48,6 +51,13 @@ O projeto utiliza Cypress com TypeScript e Page Objects simples.
 Os arquivos `.feature` são utilizados apenas como documentação dos cenários BDD. Eles não são executados pelo Cypress e não utilizam Cucumber.
 
 As specs são responsáveis por descrever o fluxo dos testes, enquanto as interações com tela, seletores e validações ficam centralizadas nas Pages.
+
+## Documentação
+
+- [Plano de Teste](./TEST_PLAN.md)
+- [Bugs Encontrados](./BUGS.md)
+- [Cenários BDD](./features)
+- [Evidências](./evidences/README.md)
 
 ## Pré-requisitos
 
@@ -168,6 +178,40 @@ cypress/reports
 
 O relatório HTML/JSON é gerado pelo `cypress-mochawesome-reporter`.
 
+As evidências selecionadas da entrega estão disponíveis em [evidences](./evidences/README.md).
+
+Os vídeos automáticos do Cypress são gerados em `cypress/videos/` durante execuções headless. Esses vídeos não são versionados por padrão, mas podem ser enviados separadamente quando necessário.
+
+## Relatório Visual
+
+O projeto utiliza `cypress-mochawesome-reporter` para gerar relatório visual das execuções E2E.
+
+Executar todos os testes com relatório:
+
+```bash
+npm run cy:run:report
+```
+
+Executar regressivo com relatório:
+
+```bash
+npm run cy:run:regressivo:report
+```
+
+Executar complementar com relatório:
+
+```bash
+npm run cy:run:complementar:report
+```
+
+Após a execução, o relatório HTML ficará disponível em:
+
+```txt
+cypress/reports/html/index.html
+```
+
+Quando executado via GitHub Actions ou self-hosted runner, o relatório pode ser publicado como artifact da execução.
+
 ## Qualidade de Código
 
 Executar lint:
@@ -204,7 +248,7 @@ npx tsc --noEmit
 
 O projeto utiliza Husky para executar validações antes de cada commit.
 
-Executando:
+Atualmente o hook de pre-commit executa:
 
 ```bash
 npm run lint
@@ -264,6 +308,13 @@ npm run cy:open
 npm run cy:run
 npm run cy:run:regressivo
 npm run cy:run:complementar
+npm run cy:run:report
+npm run cy:run:regressivo:report
+npm run cy:run:complementar:report
+npm run report:clean
+npm run report:merge
+npm run report:generate
+npm run report:open
 npm run lint
 npm run lint:fix
 npm run format
