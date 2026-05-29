@@ -13,7 +13,14 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "env -u ELECTRON_RUN_AS_NODE -u ELECTRON_NO_ATTACH_CONSOLE cypress run",
-    "prepare": "husky"
+    "prepare": "husky",
+    "report:clean": "rimraf cypress/reports cypress/screenshots cypress/videos cypress/downloads",
+    "report:merge": "cp cypress/reports/mochawesome/index.json cypress/reports/mochawesome.json",
+    "report:generate": "marge cypress/reports/mochawesome.json --reportDir cypress/reports/html --reportFilename index --inline",
+    "report:open": "xdg-open cypress/reports/html/index.html || open cypress/reports/html/index.html || start cypress/reports/html/index.html",
+    "cy:run:report": "npm run report:clean && npm run cy:run && npm run report:merge && npm run report:generate",
+    "cy:run:regressivo:report": "npm run report:clean && npm run cy:run:regressivo && npm run report:merge && npm run report:generate",
+    "cy:run:complementar:report": "npm run report:clean && npm run cy:run:complementar && npm run report:merge && npm run report:generate"
   },
   "devDependencies": {
     "@cypress/grep": "^5.1.0",
@@ -26,7 +33,11 @@
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.0",
     "husky": "^9.1.7",
+    "mochawesome": "^7.1.4",
+    "mochawesome-merge": "^4.4.1",
+    "mochawesome-report-generator": "^6.3.2",
     "prettier": "^3.2.0",
+    "rimraf": "^5.0.10",
     "typescript": "^5.4.0"
   }
 }

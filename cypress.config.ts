@@ -17,12 +17,16 @@ export default defineConfig({
   chromeWebSecurity: false,
   reporter: 'cypress-mochawesome-reporter',
   reporterOptions: {
-    reportDir: 'cypress/reports',
+    reportDir: 'cypress/reports/mochawesome',
     charts: true,
-    reportPageTitle: 'Inventario CTI E2E Report',
+    reportPageTitle: 'Inventario CTI - Relatorio E2E',
     embeddedScreenshots: true,
     inlineAssets: true,
     saveAllAttempts: false,
+    overwrite: false,
+    html: true,
+    json: true,
+    saveJson: true,
   },
 
   e2e: {
