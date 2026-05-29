@@ -65,7 +65,9 @@ O comportamento não impede o uso da funcionalidade, mas torna o fluxo mais lent
 
 #### Status
 
-## Aberto
+Aberto
+
+---
 
 ## Bugs
 

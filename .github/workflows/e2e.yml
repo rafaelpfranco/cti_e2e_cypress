@@ -1,6 +1,8 @@
 name: Cypress E2E
 
 on:
+  push:
+  pull_request:
   workflow_dispatch:
     inputs:
       tipo_teste:
@@ -14,15 +16,9 @@ on:
           - complementar
 
 jobs:
-  e2e:
-    name: Executar Cypress E2E
+  quality:
+    name: Validar qualidade
     runs-on: ubuntu-latest
-
-    env:
-      BASE_URL: ${{ secrets.BASE_URL }}
-      USER_EMAIL: ${{ secrets.USER_EMAIL }}
-      USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
-      TIPO_TESTE: ${{ github.event.inputs.tipo_teste || 'regressivo' }}
 
     steps:
       - name: Checkout
@@ -42,6 +38,34 @@ jobs:
 
       - name: Validate TypeScript
         run: npx tsc --noEmit
+
+      - name: Check formatting
+        run: npm run format:check
+
+  e2e:
+    name: Executar Cypress E2E
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: self-hosted
+    needs: quality
+
+    env:
+      BASE_URL: ${{ secrets.BASE_URL }}
+      USER_EMAIL: ${{ secrets.USER_EMAIL }}
+      USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
+      TIPO_TESTE: ${{ github.event.inputs.tipo_teste || 'regressivo' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Run all tests
         if: ${{ github.event.inputs.tipo_teste == 'todos' }}

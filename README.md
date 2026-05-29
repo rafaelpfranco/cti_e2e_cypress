@@ -1,5 +1,7 @@
 # Inventário CTI - Testes E2E com Cypress
 
+[![Cypress E2E](https://github.com/rafaelpfranco/cti_e2e_cypress/actions/workflows/e2e.yml/badge.svg)](https://github.com/rafaelpfranco/cti_e2e_cypress/actions/workflows/e2e.yml)
+
 Projeto de automação E2E do sistema **Inventário CTI**, desenvolvido com **Cypress** e **TypeScript**.
 
 A suíte cobre fluxos funcionais do sistema, como login, cadastro de ativos, cadastro e edição de atribuições, vínculo de ativos e geração de termos.
@@ -55,23 +57,22 @@ As specs são responsáveis por descrever o fluxo dos testes, enquanto as intera
 - [Plano de Teste](./TEST_PLAN.md)
 - [Bugs Encontrados](./BUGS.md)
 - [Cenários BDD](./features)
-- [Evidências](./evidences/README.md)
+- [Evidências de Execução e Relatório Visual](https://github.com/rafaelpfranco/cti_e2e_cypress/wiki/Evid%C3%AAncias-de-Execu%C3%A7%C3%A3o-%E2%80%90-Invent%C3%A1rio-CTI)
 
-## Evidências e Wiki
+## Evidências e Relatório Visual
 
-A entrega pode ser acompanhada pela Wiki do repositório, onde serão centralizados:
+As evidências da execução dos testes e o relatório visual Mochawesome estão centralizados na Wiki do repositório:
+
+[Evidências de Execução - Inventário CTI](https://github.com/rafaelpfranco/cti_e2e_cypress/wiki/Evid%C3%AAncias-de-Execu%C3%A7%C3%A3o-%E2%80%90-Invent%C3%A1rio-CTI)
+
+A página contém:
 
 - link do vídeo automático da execução Cypress;
 - link do relatório visual Mochawesome;
-- plano de teste;
-- bugs encontrados;
-- observações da execução.
+- informações da execução validada;
+- orientações para gerar o relatório localmente.
 
-Documentos relacionados:
-
-- [Plano de Teste](./TEST_PLAN.md)
-- [Bugs Encontrados](./BUGS.md)
-- [Cenários BDD](./features)
+Os artefatos brutos gerados pelo Cypress, como vídeos, screenshots, downloads e relatórios, não são versionados no repositório por padrão.
 
 O relatório visual pode ser gerado localmente com:
 
@@ -90,8 +91,6 @@ Os vídeos automáticos do Cypress são gerados em:
 ```txt
 cypress/videos/
 ```
-
-Os vídeos e relatórios gerados não são versionados por padrão. Para entrega, o vídeo pode ser disponibilizado via Google Drive e o relatório pode ser enviado como artifact, zip ou link publicado.
 
 ## Pré-requisitos
 
@@ -212,7 +211,7 @@ cypress/reports
 
 O relatório HTML/JSON é gerado pelo `cypress-mochawesome-reporter`.
 
-As evidências selecionadas da entrega estão disponíveis em [evidences](./evidences/README.md).
+As evidências selecionadas da entrega estão centralizadas na [Wiki de Evidências](https://github.com/rafaelpfranco/cti_e2e_cypress/wiki/Evid%C3%AAncias-de-Execu%C3%A7%C3%A3o-%E2%80%90-Invent%C3%A1rio-CTI).
 
 Os vídeos automáticos do Cypress são gerados em `cypress/videos/` durante execuções headless. Esses vídeos não são versionados por padrão, mas podem ser enviados separadamente quando necessário.
 
@@ -245,6 +244,10 @@ cypress/reports/html/index.html
 ```
 
 Quando executado via GitHub Actions ou self-hosted runner, o relatório pode ser publicado como artifact da execução.
+
+O relatório visual também está referenciado na Wiki de evidências da execução:
+
+[Evidências de Execução - Inventário CTI](https://github.com/rafaelpfranco/cti_e2e_cypress/wiki/Evid%C3%AAncias-de-Execu%C3%A7%C3%A3o-%E2%80%90-Invent%C3%A1rio-CTI)
 
 ## Qualidade de Código
 
@@ -319,20 +322,16 @@ Evitar:
 
 ## Pipeline
 
-A suíte pode ser executada em pipeline por tipo de teste:
+O workflow do GitHub Actions executa validações de qualidade, como lint, TypeScript e formatação.
+
+A execução E2E depende de acesso ao ambiente `http://testeqa.pge.ce.gov.br`. Caso o runner público do GitHub não tenha acesso à rede do sistema, os testes E2E devem ser executados localmente ou em um self-hosted runner com acesso ao ambiente.
+
+Quando executada manualmente por `workflow_dispatch`, a suíte E2E pode ser filtrada por tipo de teste:
 
 ```txt
 todos
 regressivo
 complementar
-```
-
-A variável `TIPO_TESTE` define o grupo de testes a ser executado.
-
-Exemplo:
-
-```env
-TIPO_TESTE=regressivo
 ```
 
 ## Scripts Principais

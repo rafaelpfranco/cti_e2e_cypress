@@ -6,7 +6,6 @@ export class LoginPage {
     emailInput: '#admin_email',
     senhaInput: '#admin_password',
     botaoEntrar: 'input[type="submit"][value="Entrar"]',
-    mensagemToast: '.bootstrap-growl.alert',
     menuUsuario: '#userDropdown',
     linkSair: 'a[href="/admins/sign_out"]',
   }
@@ -44,10 +43,6 @@ export class LoginPage {
   public deveAutenticarComSucesso(): void {
     cy.location('pathname').should('not.include', this.path)
     cy.get(this.seletores.menuUsuario).should('be.visible')
-  }
-
-  public deveExibirMensagemDeCredenciaisInvalidas(): void {
-    cy.get(this.seletores.mensagemToast).should('be.visible')
   }
 
   public realizarLogout(): void {

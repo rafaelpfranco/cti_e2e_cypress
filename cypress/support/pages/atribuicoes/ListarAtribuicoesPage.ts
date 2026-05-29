@@ -6,8 +6,6 @@ export class ListarAtribuicoesPage {
   private readonly seletores = {
     linkNovaAtribuicao: 'a[href="/portal_service/bonds/new"]',
     botaoGerarTermos: 'button[data-target="#generate_term"]',
-    filtroModalidade: '#q_modality_eq',
-    filtroColaborador: '#q_user_id_eq',
     filtroTomboContainer: '.select2-selection__rendered[title="Tombo"]',
     select2BuscaAberta: '.select2-container--open .select2-search__field',
     select2Opcoes: '.select2-results__option',
@@ -38,14 +36,6 @@ export class ListarAtribuicoesPage {
     cy.get(this.seletores.botaoGerarTermos).should('be.visible').click()
   }
 
-  public filtrarPorModalidade(modalidade: string): void {
-    cy.get(this.seletores.filtroModalidade).select(modalidade)
-  }
-
-  public filtrarPorColaborador(colaborador: string): void {
-    cy.get(this.seletores.filtroColaborador).select(colaborador, { force: true })
-  }
-
   public filtrarPorTombo(tombo: string): void {
     cy.get(this.seletores.filtroTomboContainer).click({ force: true })
     cy.get(this.seletores.select2BuscaAberta).clear().type(tombo)
@@ -56,18 +46,6 @@ export class ListarAtribuicoesPage {
     this.filtrarPorTombo('AUTO')
   }
 
-  public pesquisarPorObservacao(observacao: string): void {
-    cy.contains(this.seletores.linhasTabela, observacao).should('be.visible')
-  }
-
-  public selecionarAtribuicaoPorObservacao(observacao: string): void {
-    cy.contains(this.seletores.linhasTabela, observacao)
-      .should('be.visible')
-      .within(() => {
-        cy.get(this.seletores.checkboxLinha).check({ force: true })
-      })
-  }
-
   public selecionarPrimeiraAtribuicaoComTomboAutomatizado(): void {
     this.deveExibirAtribuicaoComTomboAutomatizado()
 
@@ -75,14 +53,6 @@ export class ListarAtribuicoesPage {
       .should('be.visible')
       .within(() => {
         cy.get(this.seletores.checkboxLinha).check({ force: true })
-      })
-  }
-
-  public clicarEditarAtribuicaoPorObservacao(observacao: string): void {
-    cy.contains(this.seletores.linhasTabela, observacao)
-      .should('be.visible')
-      .within(() => {
-        this.acessarEdicaoPeloLinkDaLinha()
       })
   }
 
@@ -123,10 +93,6 @@ export class ListarAtribuicoesPage {
           `Ativos vinculados a: ${atribuicao.colaborador}, Parabéns!`,
         )
       })
-  }
-
-  public deveExibirMensagemDeAtualizacao(): void {
-    this.deveExibirMensagemDeSucessoGenerica()
   }
 
   public deveExibirMensagemDeSucessoGenerica(): void {
