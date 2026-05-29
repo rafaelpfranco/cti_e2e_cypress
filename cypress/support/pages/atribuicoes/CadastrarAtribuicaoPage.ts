@@ -1,6 +1,6 @@
-import type { AtribuicaoCadastro } from '@/fixtures/atribuicoes/types'
+import type { AtribuicaoCadastro } from '@/fixtures/atribuicoes/cadastrarAtribuicao'
 
-export class NovaAtribuicaoPage {
+export class CadastrarAtribuicaoPage {
   public readonly path = '/portal_service/bonds/new'
 
   private readonly seletores = {
@@ -101,14 +101,18 @@ export class NovaAtribuicaoPage {
   }
 
   public preencherFormularioParaColaborador(atribuicao: AtribuicaoCadastro): void {
+    this.preencherCamposObrigatorios(atribuicao)
+    this.selecionarSistemaOperacional(atribuicao.sistemaOperacional)
+    this.preencherUsoPacoteOffice(atribuicao)
+  }
+
+  public preencherCamposObrigatorios(atribuicao: AtribuicaoCadastro): void {
     this.selecionarArea(atribuicao.area)
     this.selecionarSubarea(atribuicao.subarea)
     this.selecionarTipoColaborador()
     this.selecionarColaborador(atribuicao.colaborador ?? '')
     this.selecionarAtendidoPor(atribuicao.atendidoPor)
     this.selecionarModalidade(atribuicao.modalidade)
-    this.selecionarSistemaOperacional(atribuicao.sistemaOperacional)
-    this.preencherUsoPacoteOffice(atribuicao)
     this.preencherObservacao(atribuicao.observacao)
   }
 
@@ -161,7 +165,10 @@ export class NovaAtribuicaoPage {
       .last()
       .should('exist')
       .then(($select) => {
-        cy.wrap($select).next('.select2-container').find('.select2-selection').click({ force: true })
+        cy.wrap($select)
+          .next('.select2-container')
+          .find('.select2-selection')
+          .click({ force: true })
       })
 
     cy.get(this.seletores.selectBuscaAberta).clear().type(tombo)
@@ -185,6 +192,10 @@ export class NovaAtribuicaoPage {
     })
     this.selecionarPrimeiraDescricaoAtivo()
     this.selecionarPrimeiroStatusAtivo()
+  }
+
+  public vincularPrimeiroAtivoAutomatizadoDaAtribuicao(atribuicao: AtribuicaoCadastro): void {
+    this.vincularPrimeiroAtivo(atribuicao)
   }
 
   public salvar(): void {
@@ -254,7 +265,10 @@ export class NovaAtribuicaoPage {
       .last()
       .should('exist')
       .then(($select) => {
-        cy.wrap($select).next('.select2-container').find('.select2-selection').click({ force: true })
+        cy.wrap($select)
+          .next('.select2-container')
+          .find('.select2-selection')
+          .click({ force: true })
       })
   }
 

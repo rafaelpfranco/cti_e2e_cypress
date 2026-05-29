@@ -2,9 +2,13 @@ export class LoginPage {
   public readonly path = '/admins/sign_in'
 
   private readonly seletores = {
+    formularioLogin: '#new_admin',
     emailInput: '#admin_email',
     senhaInput: '#admin_password',
     botaoEntrar: 'input[type="submit"][value="Entrar"]',
+    mensagemToast: '.bootstrap-growl.alert',
+    menuUsuario: '#userDropdown',
+    linkSair: 'a[href="/admins/sign_out"]',
   }
 
   public visitar(): void {
@@ -13,8 +17,10 @@ export class LoginPage {
 
   public deveEstarCarregada(): void {
     cy.location('pathname').should('include', this.path)
+    cy.get(this.seletores.formularioLogin).should('be.visible')
     cy.get(this.seletores.emailInput).should('be.visible')
     cy.get(this.seletores.senhaInput).should('be.visible')
+    cy.get(this.seletores.botaoEntrar).should('be.visible')
   }
 
   public preencherEmail(email: string): void {
@@ -33,5 +39,30 @@ export class LoginPage {
     this.preencherEmail(email)
     this.preencherSenha(senha)
     this.clicarEntrar()
+  }
+
+  public deveAutenticarComSucesso(): void {
+    cy.location('pathname').should('not.include', this.path)
+    cy.get(this.seletores.menuUsuario).should('be.visible')
+  }
+
+  public deveExibirMensagemDeCredenciaisInvalidas(): void {
+    cy.get(this.seletores.mensagemToast).should('be.visible')
+  }
+
+  public realizarLogout(): void {
+    cy.get('body').then(($body) => {
+      if ($body.find(this.seletores.menuUsuario).length === 0) {
+        cy.visit('/portal_service/bonds')
+      }
+    })
+
+    cy.get(this.seletores.menuUsuario).should('be.visible').click()
+    cy.contains(this.seletores.linkSair, 'Sair').click()
+  }
+
+  public deveRetornarParaLogin(): void {
+    cy.location('pathname').should('include', this.path)
+    cy.get(this.seletores.formularioLogin).should('be.visible')
   }
 }

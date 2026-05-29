@@ -1,6 +1,9 @@
 import '@/support/commands'
 import '@/support/types'
+import { register as registerCypressGrep } from '@cypress/grep'
 import 'cypress-mochawesome-reporter/register'
+
+registerCypressGrep()
 
 Cypress.on('uncaught:exception', (erro) => {
   if (

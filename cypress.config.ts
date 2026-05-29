@@ -1,4 +1,5 @@
 import { defineConfig } from 'cypress'
+import { plugin as cypressGrepPlugin } from '@cypress/grep/plugin'
 import mochawesomeReporterPlugin from 'cypress-mochawesome-reporter/plugin'
 import { environment } from '@/support/config/environment'
 
@@ -30,6 +31,7 @@ export default defineConfig({
     supportFile: 'cypress/support/e2e.ts',
 
     setupNodeEvents(on, config) {
+      cypressGrepPlugin(config)
       mochawesomeReporterPlugin(on)
 
       config.env = {
