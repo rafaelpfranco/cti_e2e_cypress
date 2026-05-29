@@ -1,7 +1,5 @@
 # Inventário CTI - Testes E2E com Cypress
 
-[![Cypress E2E](https://github.com/rafaelpfranco/cti_e2e_cypress/actions/workflows/e2e.yml/badge.svg)](https://github.com/rafaelpfranco/cti_e2e_cypress/actions/workflows/e2e.yml)
-
 Projeto de automação E2E do sistema **Inventário CTI**, desenvolvido com **Cypress** e **TypeScript**.
 
 A suíte cobre fluxos funcionais do sistema, como login, cadastro de ativos, cadastro e edição de atribuições, vínculo de ativos e geração de termos.
