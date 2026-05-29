@@ -146,7 +146,6 @@ export class EditarAtribuicaoPage {
     this.adicionarAtivo()
     this.selecionarPrimeiroAtivoPorPrefixo('AUTO').then((tomboAtivo) => {
       atribuicao.tomboAtivo = tomboAtivo
-      cy.log(`Tombo capturado: ${atribuicao.tomboAtivo}`)
     })
     this.selecionarPrimeiraDescricaoAtivo()
     this.selecionarPrimeiroStatusNovoAtivo()

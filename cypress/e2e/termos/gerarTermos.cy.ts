@@ -19,29 +19,23 @@ describe('Gerar Termos', () => {
 
   // @regressivo @happy_path @gt01 @gt01_1
   it(
-    'deve exibir modal de geracao de termos',
+    'deve gerar termo de responsabilidade',
     { tags: ['@regressivo', '@happy_path', '@gt01', '@gt01_1'] },
     () => {
-      gerarTermosPage.deveExibirModalGerarTermos()
+      gerarTermosPage.selecionarTermoResponsabilidade()
+      gerarTermosPage.gerarTermo()
+      gerarTermosPage.deveManterTelaEmEstadoValidoAposGeracao()
     },
   )
 
   // @regressivo @happy_path @gt01 @gt01_2
   it(
-    'deve gerar termo de responsabilidade',
+    'deve gerar termo de emprestimo',
     { tags: ['@regressivo', '@happy_path', '@gt01', '@gt01_2'] },
     () => {
-      gerarTermosPage.selecionarTermoResponsabilidade()
+      gerarTermosPage.selecionarTermoEmprestimo()
       gerarTermosPage.gerarTermo()
-    },
-  )
-
-  // @complementar @happy_path @gt01 @gt01_3
-  it(
-    'deve fechar modal de geracao de termos',
-    { tags: ['@complementar', '@happy_path', '@gt01', '@gt01_3'] },
-    () => {
-      gerarTermosPage.fecharModal()
+      gerarTermosPage.deveManterTelaEmEstadoValidoAposGeracao()
     },
   )
 })

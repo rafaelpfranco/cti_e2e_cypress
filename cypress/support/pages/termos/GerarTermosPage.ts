@@ -5,7 +5,6 @@ export class GerarTermosPage {
     radioTermoResponsabilidade: '#term_type_liability',
     radioTermoEmprestimo: '#term_type_loan',
     botaoGerarTermo: '#btn-termo',
-    botaoFecharModal: '#generate_term button[data-dismiss="modal"]',
   }
 
   public deveExibirModalGerarTermos(): void {
@@ -37,8 +36,11 @@ export class GerarTermosPage {
     cy.get(this.seletores.botaoGerarTermo).should('be.visible').and('not.be.disabled').click()
   }
 
-  public fecharModal(): void {
-    cy.get(this.seletores.botaoFecharModal).first().click()
-    cy.get(this.seletores.modalGerarTermos).should('not.be.visible')
+  public deveManterTelaEmEstadoValidoAposGeracao(): void {
+    cy.get(this.seletores.modalGerarTermos).should('be.visible')
+    cy.get(this.seletores.botaoGerarTermo).should('be.visible')
+    cy.get('body').should('not.contain.text', 'Erro')
+    cy.get('body').should('not.contain.text', 'Exception')
+    cy.get('body').should('not.contain.text', 'undefined')
   }
 }

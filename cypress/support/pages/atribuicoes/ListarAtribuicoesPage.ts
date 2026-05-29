@@ -34,10 +34,6 @@ export class ListarAtribuicoesPage {
     cy.get(this.seletores.linkNovaAtribuicao).click()
   }
 
-  public clicarGerarTermos(): void {
-    cy.get(this.seletores.botaoGerarTermos).click()
-  }
-
   public abrirModalGerarTermos(): void {
     cy.get(this.seletores.botaoGerarTermos).should('be.visible').click()
   }
@@ -70,10 +66,6 @@ export class ListarAtribuicoesPage {
       .within(() => {
         cy.get(this.seletores.checkboxLinha).check({ force: true })
       })
-  }
-
-  public selecionarPrimeiraAtribuicaoAutomatizada(): void {
-    this.selecionarPrimeiraAtribuicaoComTomboAutomatizado()
   }
 
   public selecionarPrimeiraAtribuicaoComTomboAutomatizado(): void {

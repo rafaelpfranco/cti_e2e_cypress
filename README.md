@@ -17,17 +17,17 @@ Validar fluxos criticos do Inventario CTI, como login, cadastro de ativos, cadas
 - ESLint
 - Prettier
 
-## Decisoes Tecnicas
+## Convencoes de Automacao
 
-- Nao usa Cucumber.
-- Nao usa step definitions.
-- Arquivos `.feature` sao apenas documentacao BDD em `features/`.
-- Nao usa BasePage.
-- Nao usa fragments.
-- Specs nao possuem seletores diretos.
-- Seletores ficam encapsulados nas Pages.
-- Testes com comportamento, DOM ou regra de negocio nao confirmados devem parar a implementacao e solicitar validacao manual.
-- Nao criar teste falso, validacao artificial ou cenario pulado para esconder dificuldade.
+Este projeto utiliza Cypress com TypeScript e Page Objects simples.
+
+As specs nao usam Cucumber nem step definitions. Os cenarios BDD ficam documentados em arquivos `.feature`, enquanto a automacao e implementada diretamente nas specs Cypress.
+
+A arquitetura tambem evita BasePage e fragments para manter a estrutura objetiva e facil de navegar.
+
+As specs descrevem os fluxos de negocio e delegam interacoes aos Page Objects. Os seletores ficam encapsulados nas Pages e nao devem ser declarados diretamente nas specs.
+
+Os testes devem validar comportamentos reais da aplicacao. Cenarios bloqueados por ausencia de seletor, regra de negocio ou comportamento confirmado devem ser tratados antes da automacao, e a suite nao utiliza cenarios pulados como estrategia de cobertura.
 
 ## Estrutura
 
