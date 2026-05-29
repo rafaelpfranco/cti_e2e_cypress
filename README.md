@@ -6,14 +6,15 @@ A suíte cobre fluxos funcionais do sistema, como login, cadastro de ativos, cad
 
 ## Stack
 
-* Cypress
-* TypeScript
-* Dotenv
-* Page Object
-* `@cypress/grep`
-* `cypress-mochawesome-reporter`
-* ESLint
-* Prettier
+- Cypress
+- TypeScript
+- Dotenv
+- Page Object
+- `@cypress/grep`
+- `cypress-mochawesome-reporter`
+- ESLint
+- Prettier
+- Husky
 
 ## Objetivo
 
@@ -50,9 +51,9 @@ As specs são responsáveis por descrever o fluxo dos testes, enquanto as intera
 
 ## Pré-requisitos
 
-* Node.js 18 ou superior
-* npm
-* Google Chrome ou Electron
+- Node.js 18 ou superior
+- npm
+- Google Chrome ou Electron
 
 ## Instalação
 
@@ -145,14 +146,14 @@ npx cypress run --env grepTags=@regressivo
 
 ## Escopo Automatizado
 
-* Login
-* Logout
-* Cadastro de ativos
-* Cadastro de atribuições
-* Edição de atribuições
-* Vínculo de ativos
-* Alteração de status de ativos
-* Geração de termos
+- Login
+- Logout
+- Cadastro de ativos
+- Cadastro de atribuições
+- Edição de atribuições
+- Vínculo de ativos
+- Alteração de status de ativos
+- Geração de termos
 
 ## Evidências
 
@@ -199,9 +200,27 @@ Validar TypeScript:
 npx tsc --noEmit
 ```
 
+## Pre-commit
+
+O projeto utiliza Husky para executar validações antes de cada commit.
+
+Executando:
+
+```bash
+npm run lint
+```
+
+Caso o lint encontre problemas, o commit será bloqueado até que os ajustes sejam realizados.
+
+Arquivo responsável pelo hook:
+
+```txt
+.husky/pre-commit
+```
+
 ## Boas Práticas de Seletores
 
-Prioridade utilizadas:
+Prioridade utilizada:
 
 1. `data-cy`
 2. `id`
@@ -214,11 +233,11 @@ Prioridade utilizadas:
 
 Evitar:
 
-* seletores muito longos;
-* `nth-child`;
-* classes dinâmicas;
-* encadeamento profundo de HTML;
-* seletores diretamente nas specs.
+- seletores muito longos;
+- `nth-child`;
+- classes dinâmicas;
+- encadeamento profundo de HTML;
+- seletores diretamente nas specs.
 
 ## Pipeline
 
