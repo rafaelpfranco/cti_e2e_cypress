@@ -1,7 +1,5 @@
 # Inventário CTI - Testes E2E com Cypress
 
-[![Cypress E2E](https://github.com/rafaelpfranco/cti_e2e_cypress/actions/workflows/e2e.yml/badge.svg)](https://github.com/rafaelpfranco/cti_e2e_cypress/actions/workflows/e2e.yml)
-
 Projeto de automação E2E do sistema **Inventário CTI**, desenvolvido com **Cypress** e **TypeScript**.
 
 A suíte cobre fluxos funcionais do sistema, como login, cadastro de ativos, cadastro e edição de atribuições, vínculo de ativos e geração de termos.
@@ -58,6 +56,42 @@ As specs são responsáveis por descrever o fluxo dos testes, enquanto as intera
 - [Bugs Encontrados](./BUGS.md)
 - [Cenários BDD](./features)
 - [Evidências](./evidences/README.md)
+
+## Evidências e Wiki
+
+A entrega pode ser acompanhada pela Wiki do repositório, onde serão centralizados:
+
+- link do vídeo automático da execução Cypress;
+- link do relatório visual Mochawesome;
+- plano de teste;
+- bugs encontrados;
+- observações da execução.
+
+Documentos relacionados:
+
+- [Plano de Teste](./TEST_PLAN.md)
+- [Bugs Encontrados](./BUGS.md)
+- [Cenários BDD](./features)
+
+O relatório visual pode ser gerado localmente com:
+
+```bash
+npm run cy:run:regressivo:report
+```
+
+Após a execução, o relatório HTML estará disponível em:
+
+```txt
+cypress/reports/html/index.html
+```
+
+Os vídeos automáticos do Cypress são gerados em:
+
+```txt
+cypress/videos/
+```
+
+Os vídeos e relatórios gerados não são versionados por padrão. Para entrega, o vídeo pode ser disponibilizado via Google Drive e o relatório pode ser enviado como artifact, zip ou link publicado.
 
 ## Pré-requisitos
 

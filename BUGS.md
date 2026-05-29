@@ -65,11 +65,9 @@ O comportamento não impede o uso da funcionalidade, mas torna o fluxo mais lent
 
 #### Status
 
-Aberto
+## Aberto
 
----
-
-## Bugs Formalizados
+## Bugs
 
 ### BUG-001 - Campo colaborador permanece obrigatório para atribuição sem colaborador ou por subárea
 
@@ -188,84 +186,3 @@ O comportamento impacta a validação de obrigatoriedade do formulário e pode c
 #### Status
 
 Aberto
-
----
-
-## Pontos de Atenção
-
-Adicionar aqui apenas problemas observados durante a automação, mas que ainda dependem de confirmação ou evidência adicional.
-
-| ID     | Funcionalidade      | Descrição                                                                                                                                                                                                                                                                            | Status               |
-| ------ | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------- |
-| PA-001 | Comportamento geral | Durante a automação, foi necessário tratar exceções JavaScript relacionadas a propriedades `disabled` nulas em `cypress/support/e2e.ts`. As mensagens observadas foram `Cannot read properties of null (reading 'disabled')` e `Cannot set properties of null (setting 'disabled')`. | Requer evidência     |
-| PA-002 | Pipeline / Ambiente | O runner público do GitHub Actions resolveu o DNS do ambiente, mas não conseguiu conectar na porta 80 do host de teste. Este item indica limitação de acesso do runner público ao ambiente, não necessariamente bug funcional do sistema.                                            | Confirmar estratégia |
-
-### PA-001 - Exceções JavaScript relacionadas a propriedades `disabled` nulas
-
-#### Onde foi observado
-
-Arquivo `cypress/support/e2e.ts`, no tratamento de `uncaught:exception`.
-
-#### Motivo para não formalizar como bug
-
-Há indício técnico de exceção JavaScript durante a execução automatizada, mas ainda falta evidência funcional demonstrando impacto direto para o usuário final.
-
-#### Evidência necessária
-
-Captura do erro no navegador, log do console ou reprodução manual indicando em qual tela/ação a exceção ocorre e qual impacto ela causa na interface.
-
-#### Status
-
-Requer evidência.
-
-### PA-002 - Runner público do GitHub Actions não acessa o ambiente de teste
-
-#### Onde foi observado
-
-Logs do workflow GitHub Actions durante diagnóstico temporário de conectividade.
-
-#### Motivo para não formalizar como bug
-
-O DNS do ambiente foi resolvido, mas a conexão HTTP na porta 80 falhou por timeout a partir do runner público. Isso caracteriza limitação de rede, firewall, rota ou política de acesso, não uma falha funcional confirmada do Inventário CTI.
-
-#### Evidência necessária
-
-Registro da execução da pipeline e decisão técnica sobre uso de self-hosted runner ou liberação de rede para o ambiente de teste.
-
-#### Status
-
-Confirmar estratégia.
-
----
-
-## Modelo de Bug
-
-### BUG-XXX - [Título]
-
-#### Funcionalidade
-
-#### História de Usuário Relacionada
-
-#### Severidade
-
-#### Prioridade
-
-#### Ambiente
-
-#### Pré-condição
-
-#### Passos para Reproduzir
-
-1.
-2.
-3.
-
-#### Resultado Atual
-
-#### Resultado Esperado
-
-#### Evidência
-
-#### Observações
-
-#### Status
